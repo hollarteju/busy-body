@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, ChevronRight, ShoppingCart, Share2 } from 'lucide-react';
 import Products from '@/components/products';
 import DiscountBanner from '@/components/discountBanner';
 import SectionHero from '@/components/sectionHero';
+import { axiosEstore } from '@/package/eStoreAxios';
+
 
 const CategoriesProducts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [eStore, setEStore] = useState([]);
+
 
   const categories = [
     { name: 'Foot Wares', count: 700, id: 'footwares' },
@@ -27,81 +31,7 @@ const CategoriesProducts = () => {
     { name: 'Lorem Ipsum', count: 700, id: 'lorem7' }
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: 'Sanitry pads',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 2,
-      name: 'Eye Shadow',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 3,
-      name: 'Dove Cup Cream',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1556228578-dd339730de25?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 4,
-      name: 'Dove Cup Cream',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1556228578-dd339730de25?w=300&h=300&fit=crop',
-      rating: 12,
-      inStock: true
-    },
-    {
-      id: 5,
-      name: 'Eye Shadow',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 6,
-      name: 'Sanitry pads',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 7,
-      name: 'Eye Shadow',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 8,
-      name: 'Sanitry pads',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    },
-    {
-      id: 9,
-      name: 'Dove Cup Cream',
-      price: 50000,
-      image: 'https://images.unsplash.com/photo-1556228578-dd339730de25?w=300&h=300&fit=crop',
-      rating: 13,
-      inStock: true
-    }
-  ];
-
+ 
   const handleCategoryToggle = (categoryId) => {
     setSelectedCategories(prev => 
       prev.includes(categoryId) 
@@ -125,6 +55,24 @@ const CategoriesProducts = () => {
   const formatPrice = (price) => {
     return `# ${price.toLocaleString()}`;
   };
+
+  
+    const eStoreProducts = async()=>{
+      try{
+        const response = await axiosEstore("products.php");
+        if(response.status == 200){
+        const data = await response.data;
+        setEStore(data);
+        }
+      }catch(error){
+        console.log(error);
+      }
+    };
+  
+    useEffect(()=>{
+      eStoreProducts();
+    },[])
+   
 
   return (
      <div className='relative'>
@@ -181,14 +129,14 @@ const CategoriesProducts = () => {
         </div>
 
         <div className="flex-1 ">
-            <Products header="Trending Products" grid={true}/>
+            <Products header="Trending Products" grid={true} eStore={eStore}/>
         </div>
         </div>
         <div className='max-w-screen-xl mx-auto'>
             <DiscountBanner/>
         </div>
         <div className="mt-24 max-w-screen-xl mx-auto">
-            <Products header="On Discount Deals"/>
+            <Products header="On Discount Deals" eStore={eStore}/>
         </div>
      </div>
   );

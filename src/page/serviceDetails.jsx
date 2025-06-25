@@ -1,11 +1,12 @@
-import  { useState } from 'react';
-import { MapPin, Mail, Phone, Share2, CheckCircle, Home, Car, Search, Eye, Shield, Clock } from 'lucide-react';
+import  { useState, useEffect } from 'react';
+import { MapPin, Mail, Phone, Share2, CheckCircle, Home, Car, Search, Eye, Shield, Clock, Link, FileText, MessageSquare } from 'lucide-react';
 import OpenHour from '@/components/openingHour';
 import Review from '@/components/productReview';
 import StoreAdsBanner from '@/components/storeAds';
 import ServiceCard from '@/components/serviceCard';
 
 const ServiceDetails = () => {
+  const selectedService = JSON.parse(localStorage.getItem("service-details"));
   const [selectedImage, setSelectedImage] = useState(0);
 
   const profileImages = [
@@ -102,9 +103,9 @@ const ServiceDetails = () => {
   };
 
   return (
-    <div className="max-w-screen-xl space-y-24 mx-auto p-4 bg-white">
+    <div className="max-w-screen-xl space-y-24 mx-auto px-4 py-12 bg-white">
         <div>
-            <nav className="py-8">
+            {/* <nav className="py-8">
                 <div className="max-w-screen-xl mx-auto">
                 <div className="flex items-center h-16 space-x-6 text-sm font-semibold">
                     <span className="text-gray-600 hover:[#FF0303] cursor-pointer border rounded-3xl py-2 px-6">Service Provider</span>
@@ -112,12 +113,12 @@ const ServiceDetails = () => {
                     <span className="text-[#FF0303]-medium border rounded-3xl py-2 px-6">Service Providers Details</span>
                 </div>
                 </div>
-            </nav>
+            </nav> */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 {/* Profile Image */}
                 <div className="relative">
                 <img
-                    src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop&crop=face"
+                    src={`https://efixit.ng/api/${selectedService?.image}`}
                     alt="Valton kiz makeup artist"
                     className="w-full h-80 lg:h-96 object-cover rounded-lg"
                 />
@@ -126,21 +127,21 @@ const ServiceDetails = () => {
                 {/* Profile Information */}
                 <div className="space-y-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Valton kiz</h1>
-                    <p className="text-lg text-gray-600 mb-4">Makeup Artist</p>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{selectedService?.name}</h1>
+                    <p className="text-lg text-gray-600 mb-4">{selectedService?.speciality}</p>
                     
                     <div className="space-y-3">
                     <div className="flex items-center text-gray-600">
                         <MapPin className="w-5 h-5 mr-3" />
-                        <span>Lagos, Nigeria</span>
+                        <span>{selectedService?.location}</span>
                     </div>
                     <div className="flex items-center text-gray-600">
                         <Mail className="w-5 h-5 mr-3" />
-                        <span>Valtonkiz@essential.com</span>
+                        <span>{selectedService?.email}</span>
                     </div>
                     <div className="flex items-center text-gray-600">
                         <Phone className="w-5 h-5 mr-3" />
-                        <span>08123457889, 07847529?</span>
+                        <span>{selectedService?.phone_number1} {selectedService?.phone_number1}</span>
                     </div>
                     </div>
                 </div>
@@ -157,23 +158,39 @@ const ServiceDetails = () => {
                 <div>
                     <h3 className="font-semibold text-gray-900 mb-2">Bio</h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                    Lorem ipsum dolor sit amet consectetur. Nec euismod nisl nisl sit laoreet. Metus 
-                    aliquam maecenas rhoncus vulputate sed scelerisque proin faucibus. Penatibus 
-                    facilisis et egestas egestas a cursus luctus elit. Enim in amet amet urna mi. 
-                    Placerat suspendisse vitae aliquam sed amet vitae convalmentum ipsum. 
-                    Tristaque id mollis donec.
+                    {selectedService?.bio}
                     </p>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex flex-row sm:flex-col sm:gap-4 gap-3">
-                    <button
-                    onClick={handleShare}
-                    className="w-full sm:w-1/3 flex items-center text-xl font-semibold"
-                    >
-                    <Share2 className="w-5 h-5 mr-2" />
-                    Share
-                    </button>
+                    <div className='flex items-center justify-between'>
+                      <button
+                      onClick={handleShare}
+                      className="w-full sm:w-1/3 flex items-center text-xl font-semibold"
+                      >
+                      <Share2 className="w-5 h-5 mr-2" />
+                      Share
+                      </button>
+                      <div className='flex items-center gap-4'>
+                        <div className='py-1 px-3 bg-slate-100 flex items-center gap-2 rounded-xl'>
+                          <Eye size={15}/>
+                          <small>{selectedService?.views}</small>
+                        </div>
+                        {/* <div className='py-1 px-3 bg-slate-100 flex items-center gap-2 rounded-xl'>
+                          <Link size={15}/>
+                          <small>19</small>
+                        </div> */}
+                        <div className='py-1 px-3 bg-slate-100 flex items-center gap-2 rounded-xl'>
+                          <MessageSquare size={15}/>
+                          <small>25</small>
+                        </div>
+                        <div className='py-1 px-3 bg-slate-100 flex items-center gap-2 rounded-xl'>
+                          <FileText size={15}/>
+                          <small>11</small>
+                        </div>
+                      </div>
+                    </div>
                     <div className='sm:w-2/3 w-full flex flex-col sm:flex-row gap-3'>
                         <button
                         onClick={handleConnect}

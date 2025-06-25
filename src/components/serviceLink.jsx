@@ -8,13 +8,14 @@ import cobbler from "../assets/images/cobbler.png";
 export default function ServiceLinks(){
 
       const serviceProviders = [
-    { name: 'Hair Stylist', icon: hair_style, color: 'bg-green-100' },
-    { name: 'Fashion Designer', icon: sewing_machine, color: 'bg-orange-100' },
-    { name: 'Spa Treatment', icon: spa, color: 'bg-yellow-100' },
-    { name: 'Cobblers', icon: cobbler, color: 'bg-blue-100' },
-    { name: 'Makeup Artist', icon: makeup, color: 'bg-pink-100' },
-    { name: 'Fashion Designer', icon: sewing_machine, color: 'bg-orange-100' },
+    { name: 'Hair Stylist', icon: hair_style, color: 'bg-green-100', link: "information tech" },
+    { name: 'Fashion Designer', icon: sewing_machine, color: 'bg-orange-100', link: "teaching" },
+    { name: 'Spa Treatment', icon: spa, color: 'bg-yellow-100', link: "cleaning" },
+    { name: 'Cobblers', icon: cobbler, color: 'bg-blue-100', link: "teaching" },
+    { name: 'Makeup Artist', icon: makeup, color: 'bg-pink-100', link: "cleaning" },
+    { name: 'Fashion Designer', icon: sewing_machine, color: 'bg-orange-100', link: "cleaning" },
   ];
+
 
     return(
         <div>
@@ -22,7 +23,7 @@ export default function ServiceLinks(){
         
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
                 {serviceProviders.map((provider, index) => (
-                    <Link key={index} to="/service-provider" className="text-center group cursor-pointer">
+                    <Link key={index} to={`/service-provider?filter=${provider.link}`} className="text-center group cursor-pointer">
                     <div className={`mx-auto rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
                         <img src={provider.icon} className="w-full h-32 object-contain" />
                     </div>

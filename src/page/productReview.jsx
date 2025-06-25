@@ -8,11 +8,14 @@ import userPics from "../assets/images/product-user.jpg";
 import SimilarProducts from '@/components/similarProducts';
 import OpenHour from '@/components/openingHour';
 import Review from '@/components/productReview';
+import OrderDetails from '@/components/orderDetails';
 
 // Product Listing Component
 const ProductListing = () => {
+  const selectedProduct = JSON.parse(localStorage.getItem("product-details"));
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
+  const [isOpen, setIsOpen] = useState(false);
+  // https://estores.ng/
   const productImages = [
     left,
     center, 
@@ -30,7 +33,7 @@ const ProductListing = () => {
   return (
     <div className="min-h-screen ">
       {/* Navigation Breadcrumb */}
-      <nav className="py-8">
+      {/* <nav className="py-8">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16 space-x-6 text-sm">
             <span className="text-gray-600 hover:text-blue-600 cursor-pointer border rounded-3xl py-2 px-6">All Products</span>
@@ -38,22 +41,19 @@ const ProductListing = () => {
             <span className="text-blue-600 font-medium border rounded-3xl py-2 px-6">Freezer</span>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       
       {/* <ToggleBtn setCurrentView={setCurrentView} currentView={currentView}/> */}
 
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-24">
-          {/* Main Product Section */}
           <div className="lg:col-span-2">
-            {/* Product Image */}
             <div className="bg-white rounded-lg p-6 mb-6  ">
               <div className="relative bg-white rounded-lg overflow-hidden">
-                {/* Main NIVEA Soft Product Image */}
                 <div className="aspect-auto flex items-center justify-center px-8">
-                  <div className="relative w-full max-w-md">
-                    <img src={big} alt="" className="w-full h-96 object-cover" />
+                  <div className="relative max-w-xl">
+                    <img src={`https://estores.ng/${selectedProduct?.product_image}`} alt="" className="w-full h-96 object-cover" />
                   </div>
                 </div>
               </div>
@@ -63,9 +63,9 @@ const ProductListing = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                      # 50,000
+                      #{selectedProduct?.product_price}
                     </h1>
-                    <p className="text-gray-600 text-sm mb-2">5,345 views</p>
+                    <p className="text-gray-600 text-sm mb-2">{selectedProduct?.product_views} views</p>
                   </div>
                   <div className="flex items-center space-x-3">
                     <button className="p-2 text-gray-400 hover:text-gray-600">
@@ -83,7 +83,7 @@ const ProductListing = () => {
                 <div className="text-sm text-gray-600 space-y-1">
                   <p>Posted: 28/10/2023</p>
                   <p>Ends: 28/11/2023</p>
-                  <p>Location: Ikeja street</p>
+                  <p>Location: {selectedProduct?.product_location}</p>
                   <p>Distance: 11 Km</p>
                 </div>
               </div>
@@ -135,7 +135,11 @@ const ProductListing = () => {
                 </div>
                 </div>
 
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+                <button 
+                className="w-full bg-red-600 hover:bg-red-700 text-white 
+                font-bold py-3 px-6 rounded-lg text-lg transition-colors"
+                onClick={()=>setIsOpen(true)}
+                >
                 order
                 </button>
             </div>
@@ -167,6 +171,10 @@ const ProductListing = () => {
         </div>
       </div>
       <StoreDetails/>
+      {
+        isOpen &&
+        <OrderDetails setIsOpen={setIsOpen}/>
+      }
     </div>
   );
 };

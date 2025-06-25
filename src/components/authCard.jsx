@@ -1,40 +1,14 @@
 import React, { useState } from 'react';
-import { User, ShoppingCart, Wrench, X } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { X } from 'lucide-react';
 
-export default function AuthCard({setShowPopup}) {
+
+export default function AuthCard({setShowPopup, showPopup, userTypes, btn, auth, link}) {
     const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState(null);
 
-  const userTypes = [
-    {
-      id: 'vendor',
-      title: 'Vendor',
-      description: 'Sell your products and manage inventory',
-      icon: ShoppingCart,
-      color: 'from-blue-500 to-blue-600',
-      hoverColor: 'from-blue-600 to-blue-700',
-      link : "https://estores.ng/join-us.php"
-    },
-    {
-      id: 'buyer',
-      title: 'Buyer',
-      description: 'Browse and purchase products',
-      icon: User,
-      color: 'from-green-500 to-green-600',
-      hoverColor: 'from-green-600 to-green-700'
-    },
-    {
-      id: 'service-provider',
-      title: 'Service Provider',
-      description: 'Offer services and manage bookings',
-      icon: Wrench,
-      color: 'from-purple-500 to-purple-600',
-      hoverColor: 'from-purple-600 to-purple-700',
-      link: "https://efixit.ng/join-us.php"
-    }
-  ];
+ 
 
 
 
@@ -52,7 +26,7 @@ export default function AuthCard({setShowPopup}) {
       <div className="fixed top-44 z-50 bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 p-8 transform transition-all duration-300 animate-in fade-in zoom-in">
         {/* Close Button */}
         <button
-          onClick={()=>setShowPopup(false)}
+          onClick={()=>setShowPopup(null)}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
         >
           <X size={24} />
@@ -65,7 +39,7 @@ export default function AuthCard({setShowPopup}) {
         </div>
 
         {/* User Type Cards */}
-        <div className="relative  mx-auto  grid grid-cols-1 md:grid-cols-3 gap-6 items-center justify-center">
+        <div className="relative w-3/4 mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center justify-center">
           {userTypes.map((type) => {
             const IconComponent = type.icon;
             const isSelected = selectedType === type.id;
@@ -73,12 +47,11 @@ export default function AuthCard({setShowPopup}) {
             return (
               <div
                 key={type.id}
-                className={`relative group cursor-pointer transform transition-all duration-300 hover:scale-105 ${
+                className={`w-full relative flex items-center justify-center group cursor-pointer transform transition-all duration-300 hover:scale-105 ${
                   isSelected ? 'scale-105' : ''
                 }`}
-                onClick={() => handleLogin(type.id)}
               >
-                <div className={`bg-gradient-to-br ${type.color} rounded-xl p-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 ${
+                <div className={`bg-gradient-to-br w-full ${type.color} rounded-xl p-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 ${
                   isSelected ? `bg-gradient-to-br ${type.hoverColor}` : `group-hover:bg-gradient-to-br group-hover:${type.hoverColor}`
                 }`}>
                   {/* Icon */}
@@ -99,7 +72,7 @@ export default function AuthCard({setShowPopup}) {
                         isSelected ? 'bg-opacity-30' : ''
                         }`}
                         onClick={(()=>setShowPopup(false))}>
-                        Select
+                        {btn}
                         </button>
                     </Link>
                   </div>
@@ -128,9 +101,9 @@ export default function AuthCard({setShowPopup}) {
         {/* Footer */}
         <div className="text-center mt-8 pt-6 border-t border-gray-200">
           <p className="text-sm text-gray-500">
-            Don't have an account? 
-            <button className="text-blue-600 hover:text-blue-700 ml-1 font-medium">
-              Sign in here
+            {auth}
+            <button className="text-blue-600 hover:text-blue-700 ml-1 font-medium" onClick={showPopup == "register" ? ()=>setShowPopup("login") : ()=>setShowPopup("register")}>
+              {link}
             </button>
           </p>
         </div>

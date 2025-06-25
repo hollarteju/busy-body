@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { axiosInstance } from "./axios";
+import { axiosInstance } from "./eStoreAxios";
 import Cookies from 'js-cookie';
 
 export const useRefreshToken = () => {

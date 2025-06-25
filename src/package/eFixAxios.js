@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
-    baseURL: "https://signaturecards.ng/api/v1",
+export const axiosEfix = axios.create({
+    baseURL: "https://efixit.ng/api/",
     headers: {
         "Content-Type": "application/json",
     }

@@ -1,4 +1,4 @@
-import { axiosInstance } from './axios';
+import { axiosInstance } from './eStoreAxios';
 // import { useRefreshToken } from './refreshToken';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';

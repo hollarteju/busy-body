@@ -14,7 +14,8 @@ export default function Footer(){
         "/service-details",
         "/product-categories",
         "/blogs",
-        "/group"
+        "/group",
+        "/trending-detail"
     ];
 
     

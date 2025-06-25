@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, ShoppingCart, Share2, Heart, Play, Facebook, Instagram, Linkedin, Twitter, Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Heart, Play } from 'lucide-react';
 import HeroSection from '@/components/heroSection';
 import PromotionaBanner from '@/components/promotionalBanner';
 import ServiceProvider from '@/components/serviceProvider';
@@ -11,10 +11,32 @@ import bike from "../assets/images/bike.jpg";
 import black_car from "../assets/images/black_car.jpg";
 import bike_alone from "../assets/images/bike_alone.jpg"
 import AuthCard from '@/components/authCard';
+import { Link } from 'react-router-dom';
+import { User, ShoppingCart, Wrench, HelpingHand  } from 'lucide-react';
+import { axiosEstore } from '@/package/eStoreAxios';
 
-const LandingPage = ({showPopup, setShowPopup}) => {
- 
+// import TrendingDetail from '@/components/trendingDetail';
 
+
+const LandingPage = ({getCarts}) => {
+  const [eStore, setEStore] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+
+  const eStoreProducts = async()=>{
+    try{
+      const response = await axiosEstore("products.php");
+      if(response.status == 200){
+      const data = await response.data;
+      setEStore(data.products);
+      }
+    }catch(error){
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    eStoreProducts();
+  },[])
  
 
   const groups = [
@@ -41,11 +63,74 @@ const LandingPage = ({showPopup, setShowPopup}) => {
     { name: 'Hush', desc: 'Lorem ipsum dolor sit amet consectetur. Ut turpis hac adipiscing viverra accumsan.' },
   ];
 
+   const userTypes = [
+      {
+        id: 'vendor',
+        title: 'Vendor',
+        description: 'Sell your products and manage inventory',
+        icon: ShoppingCart,
+        color: 'from-blue-500 to-blue-600',
+        hoverColor: 'from-blue-600 to-blue-700',
+        link : "https://estores.ng/join-us.php?detail=busy-body"
+      },
+      // {
+      //   id: 'buyer',
+      //   title: 'Buyer',
+      //   description: 'Browse and purchase products',
+      //   icon: User,
+      //   color: 'from-green-500 to-green-600',
+      //   hoverColor: 'from-green-600 to-green-700',
+      //   link: "https://efixit.ng/join-us.php?detail=busy-body&user=buyer"
+      // },
+      {
+        id: 'service-provider',
+        title: 'Service Provider',
+        description: 'Offer services and manage bookings',
+        icon: HelpingHand ,
+        color: 'from-purple-500 to-purple-600',
+        hoverColor: 'from-purple-600 to-purple-700',
+        link: "https://efixit.ng/join-us.php?detail=busy-body"
+      }
+    ];
+
+
+  const loginTypes = [
+      {
+        id: 'vendor',
+        title: 'Vendor',
+        description: 'Login as a vendor',
+        icon: ShoppingCart,
+        color: 'from-blue-500 to-blue-600',
+        hoverColor: 'from-blue-600 to-blue-700',
+        link : "https://estores.ng/login.php?detail=busy-body"
+      },
+      // {
+      //   id: 'buyer',
+      //   title: 'Buyer',
+      //   descriptionl: 'Login as a Buyer',
+      //   icon: User,
+      //   color: 'from-green-500 to-green-600',
+      //   hoverColor: 'from-green-600 to-green-700',
+      //   link: "https://efixitl.ng/ogin.php?detail=busy-body&user=buyer"
+      // },
+      {
+        id: 'service-provider',
+        title: 'Service Provider',
+        description: 'Login as a service provider',
+        icon: HelpingHand ,
+        color: 'from-purple-500 to-purple-600',
+        hoverColor: 'from-purple-600 to-purple-700',
+        link: "https://efixit.ng/login.php?detail=busy-body"
+      }
+    ];
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 ">
         <HeroSection/>
         <PromotionaBanner/>
-        <Products header="Products"/>
+        <Products header="Products" eStore={eStore} getCarts={getCarts} setCartItems={setCartItems} cartItems={cartItems}/>
       <section className="py-16 bg-white">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <ServiceProvider/>
@@ -58,7 +143,7 @@ const LandingPage = ({showPopup, setShowPopup}) => {
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900">Groups you may like</h2>
-            <button className="text-red-500 hover:text-red-600 font-semibold">See more</button>
+            <Link to="/group" className="text-red-500 hover:text-red-600 font-semibold">See more</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {groups.map((group, index) => (
@@ -75,7 +160,7 @@ const LandingPage = ({showPopup, setShowPopup}) => {
               </div>
             ))}
           </div>
-          <Trending/>
+          {/* <Trending/> */}
         </div>
       </section>
 
@@ -121,9 +206,13 @@ const LandingPage = ({showPopup, setShowPopup}) => {
           </div>
         </div>
       </section>
-      {showPopup &&
-        <AuthCard showPopup={showPopup} setShowPopup={setShowPopup} />
-      }
+      {/* {showPopup == "register" ?
+        <AuthCard showPopup={showPopup} setShowPopup={setShowPopup} userTypes={userTypes} btn="Register" auth="have an account?" link="Log in" />
+        :
+        showPopup == "login" &&
+        <AuthCard showPopup={showPopup} setShowPopup={setShowPopup} userTypes={loginTypes} btn="Login" auth="Don't have an account?" link="Register"/>
+      } */}
+      {/* <TrendingDetail/> */}
     </div>
   );
 };
