@@ -55,7 +55,7 @@ export default function NavBar({setShowPopup, cart, getCarts}){
 
     useEffect(()=>{
       getCarts()
-    },[cart])
+    },[])
     
     return(
         <Fragment>
@@ -119,7 +119,7 @@ export default function NavBar({setShowPopup, cart, getCarts}){
                 {/* <User size={20}/> */}
                 <Link to="/carts" className='relative'>
                   <div className='h-6 w-6 bg-red-600 text-white rounded-full absolute flex items-center justify-center top-[-1rem] right-[-1rem]'>
-                    <small>{cart}</small>
+                    <small>{cart?.length}</small>
                   </div>
                   <ShoppingCart size={20} color='black'/>
                 </Link>
@@ -159,10 +159,6 @@ const MenuTag = ({navlink})=>{
                 <a key={index} href={nav.redirect} className="text-gray-700 hover:text-black py-2 transition-colors">{nav.lable}</a>
             ))
         }
-        <div className="flex flex-col space-y-4 pt-4 border-t">
-          <button className="text-left text-gray-700 hover:text-gray-900 py-2">Log In</button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-left" onClick={()=>setShowPopup(true)}>Sign Up</button>
-        </div>
       </nav>
     </div>
   )

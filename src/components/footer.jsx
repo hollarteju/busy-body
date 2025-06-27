@@ -35,19 +35,19 @@ export default function Footer(){
                     </button>
                     </div>
                     
-                    <div className='flex justify-end'>
+                    <div className='flex md:justify-end '>
                     <div>
                         <h3 className="text-lg font-semibold mb-6">Links</h3>
                         <ul className="space-y-3">
-                        <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Terms and conditions</a></li>
-                        <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">FAQs</a></li>
-                        <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Contact Us</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Terms and conditions</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">FAQs</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Contact Us</a></li>
                         </ul>
                     </div>
                     </div>
                     
-                    <div className='flex justify-end'>
+                    <div className='flex md:justify-end'>
                     <div>
                         <h3 className="text-lg font-semibold mb-6">Follow us</h3>
                         <div className="flex space-x-4">

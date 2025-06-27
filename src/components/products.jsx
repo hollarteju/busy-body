@@ -16,7 +16,7 @@ export default function Products({ header, grid, eStore, getCarts, setCartItems,
   };
 
   const cartHandler = (item) => {
-    const exists = cartItems.some(i => i.id === item.id);
+    const exists = cartItems?.some(i => i.id === item.id);
     const updatedCart = exists
       ? cartItems.filter(i => i.id !== item.id)
       : [...cartItems, item];
@@ -30,10 +30,10 @@ export default function Products({ header, grid, eStore, getCarts, setCartItems,
   return (
     <section className="py-16 bg-white">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-12">{header}</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-12">{header}</h2>
         <div className={`grid grid-cols-1 sm:grid-cols-2 ${grid ? "lg:grid-cols-3 gap-4" : "lg:grid-cols-4 gap-12"}`}>
           {eStore?.map((product, index) => {
-            const inCart = cartItems.some(i => i.id === product.id);
+            const inCart = cartItems?.some(i => i.id === product.id);
             return (
               <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div className="relative cursor-pointer" onClick={() => selectedProduct(product)}>

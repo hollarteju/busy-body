@@ -20,7 +20,7 @@ export default function App() {
     
      const getCarts = ()=>{
       const items = JSON.parse(localStorage.getItem("busy-body-cart")) || [];
-      setCart(items.length);
+      setCart(items);
     };
 
 
@@ -30,7 +30,7 @@ export default function App() {
         <NavBar setShowPopup={setShowPopup} getCarts={getCarts} cart={cart} setCart={setCart}/>
         <Routes>
           <Route path="/" element={<LandingPage getCarts={getCarts}/>} />
-          <Route path="product-review" element={<ProductReview/>}/> 
+          <Route path="product-review" element={<ProductReview getCarts={getCarts} cart={cart} setCart={setCart}/>}/> 
           <Route path="service-provider" element={<Services/>}/> 
           <Route path="/carts" element={<CartComponent getCarts={getCarts}/>}/> 
           <Route path="/service-details" element={<ServiceDetails/>}/> 

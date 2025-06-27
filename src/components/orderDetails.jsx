@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { X, User, Package, MapPin, Phone, Mail, CreditCard } from 'lucide-react';
+import { X, User, Package, MapPin, Phone, Mail } from 'lucide-react';
+import { PaystackButton } from 'react-paystack';
 
-export default function OrderDetails({setIsOpen}) {
+
+export default function OrderDetails({setIsOpen, selectedProduct}) {
+    const publicKey = "pk_test_f0a7e900e3367840ca8ac7d6ddff3720f122ee28";
+    
   const [formData, setFormData] = useState({
     fullName: '',
     quantity: '',
     address: '',
     phoneNumber: '',
-    email: ''
+    email: '',
+    amount: selectedProduct?.product_price
   });
+  const amount = formData.amount * 100
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -18,7 +24,6 @@ export default function OrderDetails({setIsOpen}) {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -27,7 +32,16 @@ export default function OrderDetails({setIsOpen}) {
     }
   };
 
-  const validateForm = () => {
+    const isFormIncomplete = !formData.fullName.trim() ||
+                            !formData.quantity.trim() ||
+                            isNaN(formData.quantity) || parseInt(formData.quantity) <= 0 ||
+                            !formData.address.trim() ||
+                            !formData.phoneNumber.trim() ||
+                            !/^\+?[\d\s\-\(\)]{10,}$/.test(formData.phoneNumber.replace(/\s/g, '')) ||
+                            !formData.email.trim() ||
+                            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+
+    const validateForm = () => {
     const newErrors = {};
     
     if (!formData.fullName.trim()) {
@@ -60,14 +74,14 @@ export default function OrderDetails({setIsOpen}) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      // Process the transaction
-      console.log('Transaction details:', formData);
-      alert('Transaction details submitted successfully!');
-      
-      // Reset form and close popup
-      setFormData({
+
+  const closePopup = () => {
+    setIsOpen(false);
+    setErrors({});
+  };
+
+  const onSuccess = ()=>{
+     setFormData({
         fullName: '',
         quantity: '',
         address: '',
@@ -75,13 +89,11 @@ export default function OrderDetails({setIsOpen}) {
         email: ''
       });
       setIsOpen(false);
-    }
   };
 
-  const closePopup = () => {
-    setIsOpen(false);
-    setErrors({});
-  };
+  const onClose = ()=>{
+    console.log("close")
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -104,11 +116,12 @@ export default function OrderDetails({setIsOpen}) {
             <div className="p-6 space-y-5">
               {/* Full Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <User className="w-4 h-4 text-gray-500" />
                   Full Name
                 </label>
                 <input
+                  required 
                   type="text"
                   name="fullName"
                   value={formData.fullName}
@@ -125,11 +138,12 @@ export default function OrderDetails({setIsOpen}) {
 
               {/* Quantity */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <Package className="w-4 h-4 text-gray-500" />
                   Quantity
                 </label>
                 <input
+                  required 
                   type="number"
                   name="quantity"
                   value={formData.quantity}
@@ -147,7 +161,7 @@ export default function OrderDetails({setIsOpen}) {
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-gray-500" />
                   Address
                 </label>
@@ -168,11 +182,12 @@ export default function OrderDetails({setIsOpen}) {
 
               {/* Phone Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <Phone className="w-4 h-4 text-gray-500" />
                   Phone Number
                 </label>
                 <input
+                  required 
                   type="tel"
                   name="phoneNumber"
                   value={formData.phoneNumber}
@@ -189,11 +204,12 @@ export default function OrderDetails({setIsOpen}) {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <Mail className="w-4 h-4 text-gray-500" />
                   Email Address
                 </label>
                 <input
+                  required 
                   type="email"
                   name="email"
                   value={formData.email}
@@ -217,13 +233,22 @@ export default function OrderDetails({setIsOpen}) {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="flex-1 px-4 py-3 bg-black text-white rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                <div
+                  onClick={validateForm}
+                  className={`flex-1 py-3 ${isFormIncomplete ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-900'} text-white text-center rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl`}
                 >
-                  Proceed
-                </button>
+                <PaystackButton 
+                disabled={isFormIncomplete}
+                text='Procees'
+                publicKey={publicKey}
+                email={"webmasterjd@gmail.com"}
+                amount={amount}
+                currency={"NGN"}
+                className="w-full px-4"
+                onSuccess={onSuccess}
+                onClose={onClose}
+                />
+                </div>
               </div>
             </div>
           </div>

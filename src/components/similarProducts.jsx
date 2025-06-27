@@ -3,6 +3,7 @@ import ultra from "../assets/images/ultra.png";
 import dove from "../assets/images/dove.png";
 import eye_shadow from "../assets/images/eye_shadow.png";
 import { Link } from 'react-router-dom';
+import Products from './products';
 
 export default function SimilarProducts(){
      const products = [
